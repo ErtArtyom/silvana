@@ -1,34 +1,43 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "../App.css";
+import "./style.css";
 
-function Seminars() {
-  return (
-    <div>
-      <ul className="semlist">
-        <li>
-          <Link to="/sem1">Crystal Reports</Link>
-        </li>
-        <p>- Här kan du läsa mer om Crystal Reports.</p>
-        <li>
-          <Link to="/sem2">KA-Dagen</Link>
-        </li>
-        <p>
-          - Här kan du läsa mer om hur KA-Dagen går till.
-          <br />
-        </p>
-        <li>
-          <Link to="/sem3">Våga Tala</Link>
-        </li>
-        <p>- Här kan du läsa mer om....</p>
-        <li>
-          <Link to="/" style={{ fontSize: "25px" }}>
-            HOME
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
+class Seminars extends Component {
+  constructor() {
+    super();
+    this.state = {
+      seminars: [],
+    };
+  }
+
+  componentDidMount() {
+    // Simple GET request using fetch
+    fetch("https://localhost:5001/api/seminars")
+      .then((response) => response.json())
+      .then((data) => this.setState({ seminars: data }));
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Seminars List</h1>
+        <ul>
+          {this.state.seminars.map((item) => {
+            return (
+              <div>
+                <li key={item.id}>
+                  <h2>
+                    <Link to={"/seminars/sem/" + item.id}>{item.namn}</Link>
+                  </h2>
+                </li>
+                <p>{item.beskrivning}</p>
+              </div>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
 }
 
 export default Seminars;

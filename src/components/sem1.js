@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class sem1 extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       newUser: "",
       sem1: {},
@@ -13,7 +13,7 @@ class sem1 extends Component {
         efternamn: "",
         adress: "",
         tel: "",
-        seminarId: 1,
+        seminarId: props.match.params,
       },
     };
     this.handleChange = this.handleChange.bind(this);
@@ -22,7 +22,7 @@ class sem1 extends Component {
 
   componentDidMount() {
     // Simple GET request using fetch
-    fetch("https://localhost:5001/api/seminars/1")
+    fetch("https://localhost:5001/api/seminars/" + this.props.match.params.id)
       .then((response) => response.json())
       .then((data) => this.setState({ sem1: data }));
   }
